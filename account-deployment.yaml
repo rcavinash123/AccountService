@@ -1,0 +1,40 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: accountservice
+spec:
+  replicas: 2
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 24%
+  selector:
+    matchLabels:
+      app: accountservice
+  template:
+    metadata:
+      labels:
+        app: accountservice
+    spec:
+      containers:
+      - name: accountservice-container
+        image: rcavinash123/accountservice:v1.0.0
+        ports:
+          - containerPort: 4004
+            protocol: TCP
+        resources:
+          requests:
+            memory: 512Mi
+          limits:
+            memory: 1Gi
+        env:
+          - name: DEBUG_MODE
+            value: "0"
+        readinessProbe:
+          httpGet:
+            path: /acct/healthz
+            port: 4004
+          initialDelaySeconds: 20
+          periodSeconds: 20
+          
