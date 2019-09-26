@@ -109,7 +109,6 @@ def getUsageParams():
         redisdb = redis.Redis(host=redishost,port=redisport,password=redispwd)
         print("MongoDB Ok")
         RedisOK = True
-        redisdb.close()
 
         jresp = json.dumps({"result":{"status":"true","code":"200","reason":"None"}})
         resp = Response(jresp, status=200, mimetype='application/json')
