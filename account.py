@@ -167,10 +167,10 @@ if __name__ == '__main__':
         
         data = json.dumps({
                 "balanceget":{
-                    "url":"http://accountservice.default.svc.cluster.local:4002/acct/balanceget/"
+                    "url":"http://accountservice.default.svc.cluster.local:4004/acct/balanceget/"
                 },
                 "healthcheck":{
-                    "url":"http://accountservice.default.svc.cluster.local:4002/acct/healthz"
+                    "url":"http://accountservice.default.svc.cluster.local:4004/acct/healthz"
                 }
             })
 
