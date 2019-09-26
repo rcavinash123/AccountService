@@ -111,7 +111,7 @@ def getUsageParams():
         RedisOK = True
         redisdb.close()
 
-        jresp = jsonify({"result":{"status":"true","code":"200","reason":"None"}})
+        jresp = json.dumps({"result":{"status":"true","code":"200","reason":"None"}})
         resp = Response(jresp, status=200, mimetype='application/json')
         return resp
 
@@ -127,7 +127,7 @@ def getUsageParams():
             print("Failed to connect to zoo keeper")
             Reason = "Failed to connect to zoo keeper"
 
-        jresp = jsonify({"result":{"status":"fail","code":"500","reason":Reason}})
+        jresp = json.dumps({"result":{"status":"fail","code":"500","reason":Reason}})
         resp = Response(jresp, status=500, mimetype='application/json')
         return resp
 
