@@ -30,6 +30,8 @@ def balanceget(ID):
         redisdb = redis.Redis(host=redishost,port=redisport,password=redispwd)
         redisdb.ping()
 
+        print("Before getting users from mongo db")
+
         users = mongodb.users
         result = []
         redisData = None
@@ -79,9 +81,11 @@ def balanceget(ID):
                 }
               ]
             acctData = list(users.aggregate(aggr))
+            print("After getting data from mongo db")
             strData = acctData[0]
             client.close()
-            return jsonify({"result":{"status":"true","code":"200","data":strData} })
+            result = json.dumps({"result":{"status":"true","code":"200","data":strData} })
+            return Response(result,status=200,content_type="application/json")
         else:
             result = jsonify({ "result":{ "status":"false","code":"500","reason":"User not found" } })
             client.close()
