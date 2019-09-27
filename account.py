@@ -22,7 +22,7 @@ redis_ok = False
 # Input Params : ID
 @app.route('/acct/balanceget/<ID>',methods=['GET'])
 def balanceget(ID):
-    print("Requested for account balance")
+    print("Requested for account balance recieved")
     try:
         client = MongoClient(mongourl)
         mongodb = client.CubusDBTest
@@ -87,11 +87,11 @@ def balanceget(ID):
             result = json.dumps({"result":{"status":"true","code":"200","data":strData} })
             return Response(result,status=200,content_type="application/json")
         else:
-            result = jsonify({ "result":{ "status":"false","code":"500","reason":"User not found" } })
+            result = json.dumps({ "result":{ "status":"false","code":"500","reason":"User not found" } })
             client.close()
             return result
     except Exception as ex:
-        result = jsonify({ "result":{ "status":"false","code":"500","reason":str(ex) } })
+        result = json.dumps({ "result":{ "status":"false","code":"500","reason":str(ex) } })
         return result
 
 @app.route('/acct/healthz',methods=['GET'])
