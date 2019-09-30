@@ -14,7 +14,7 @@ import logging
 from flask import Response
 from bson import json_util
 
-FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+#FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
@@ -52,8 +52,8 @@ def balanceget(ID):
             jsonData = json.loads(redisData)
             userId = jsonData["result"]["userId"]
             logging.debug("userId : " + str(userId))
-
             user = users.find_one({'userId' : userId})
+
         if user: 
             aggr = [
                 {

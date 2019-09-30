@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: accountservice-container
-        image: rcavinash123/accountservice:v1.0.8
+        image: rcavinash123/accountservice:v1.0.9
         ports:
           - containerPort: 4004
             protocol: TCP
