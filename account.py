@@ -46,7 +46,7 @@ def balanceget(ID):
         result = []
         redisData = None
         redisData = redisdb.get(str(ID))
-
+        print("RedisData : " + str(redisData))
         if redisData!=None:
             logging.debug("redis data : " + redisData)
             jsonData = json.loads(redisData)
@@ -54,30 +54,30 @@ def balanceget(ID):
             logging.debug("userId : " + str(userId))
             user = users.find_one({'userId' : userId})
 
-        if user: 
-            aggr = [
-                {
-                  '$lookup': {
-                    'from': 'userToAcctMapping', 
-                    'localField': 'userId', 
-                    'foreignField': 'userId', 
-                    'as': 'UserAccounts'
-                  }
-                }, 
-                {
-                  '$lookup': {
-                    'from': 'acctInfo', 
-                    'localField': 'UserAccounts.userId', 
-                    'foreignField': 'userId', 
-                    'as': 'UserAccounts.AccountInfo'
-                  }
-                },
-                { 
-                  '$match' : { 
-                    'userId' : userId,
-                  } 
-                },
-                { 
+            if user: 
+                aggr = [
+                    {
+                    '$lookup': {
+                        'from': 'userToAcctMapping', 
+                        'localField': 'userId', 
+                        'foreignField': 'userId', 
+                        'as': 'UserAccounts'
+                        }
+                    }, 
+                    {
+                    '$lookup': {
+                        'from': 'acctInfo', 
+                        'localField': 'UserAccounts.userId', 
+                        'foreignField': 'userId', 
+                        'as': 'UserAccounts.AccountInfo'
+                        }
+                    },
+                    { 
+                    '$match' : { 
+                        'userId' : userId,
+                        } 
+                    },
+                    { 
                     "$project" : { 
                         "_id": 0,
                         "regDate":0,
@@ -88,18 +88,22 @@ def balanceget(ID):
                             "_id":0,
                         },
                     }
-                }
-              ]
-            acctData = list(users.aggregate(aggr))
-            logging.debug("After getting data from mongo db")
-            strData = acctData[0]
-            client.close()
-            result = json.dumps({"result":{"status":"true","code":"200","data":strData} })
-            return Response(result,status=200,content_type="application/json")
+                    }
+                ]
+                acctData = list(users.aggregate(aggr))
+                logging.debug("After getting data from mongo db")
+                strData = acctData[0]
+                client.close()
+                result = json.dumps({"result":{"status":"true","code":"200","data":strData} })
+                return Response(result,status=200,content_type="application/json")
+            else:
+                result = json.dumps({ "result":{ "status":"false","code":"500","reason":"User not found" } })
+                client.close()
+                return result
         else:
             result = json.dumps({ "result":{ "status":"false","code":"500","reason":"User not found" } })
             client.close()
-            return result
+            return result    
     except Exception as ex:
         result = json.dumps({ "result":{ "status":"false","code":"500","reason":str(ex) } })
         return result
