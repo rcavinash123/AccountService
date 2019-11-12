@@ -1,9 +1,9 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: accountservice
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
    type: RollingUpdate
    rollingUpdate:
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: accountservice-container
-        image: rcavinash123/accountservice:v1.1.0
+        image: rcavinash123/accountservice:v1.1.1
         ports:
           - containerPort: 4004
             protocol: TCP
@@ -31,10 +31,5 @@ spec:
         env:
           - name: DEBUG_MODE
             value: "0"
-        readinessProbe:
-          httpGet:
-            path: /acct/healthz
-            port: 4004
-          initialDelaySeconds: 20
-          periodSeconds: 20
+        
           
