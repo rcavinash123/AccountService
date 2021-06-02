@@ -17,7 +17,7 @@ python-dateutil==1.5
 redis==3.2.1
 requests==2.22.0
 six==1.12.0
-urllib3==1.25.3
+urllib3==1.26.5
 Werkzeug==0.15.5
 xattr==0.6.4
 kazoo==2.6.1
